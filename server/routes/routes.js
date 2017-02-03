@@ -1,6 +1,7 @@
 // var serverRoutes = require('express').Router();
 var marketController = require('../controllers/marketController');
 var adminController = require('../controllers/adminController');
+var twilio = require('../controllers/twilioController');
 var util = require('../util/util_functions');
 var bcrypt = require('bcrypt-nodejs');
 
@@ -91,7 +92,12 @@ module.exports = function(app, passport) {
     res.redirect('/');
   });
 
-
+  app.post('/message', (req, res) => {
+    var phone = req.body.phoneNum;
+    var content = req.body.message;
+    twilio.sendMessage(phone, content);
+    res.status(200).send();
+  })
 
 }
 

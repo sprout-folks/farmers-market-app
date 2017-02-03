@@ -47,7 +47,7 @@ module.exports = {
 				zip.collection.insert({Zip:userZip})
 				.then(() => {
 					console.log('here in market controller')
-					fetcher.fetchAllData(userZip,coordinates, radius, res, (coordinates, radius, res) => {
+					fetcher(userZip,coordinates, radius, res, (coordinates, radius, res) => {
 						console.log(coordinates)
 						marketLocation(coordinates, radius, res)
 					})

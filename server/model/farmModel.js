@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var cacheMarket = new mongoose.Schema({
+  ID: String,
   Address: String,
   GoogleLink: String,
   Products: String,
