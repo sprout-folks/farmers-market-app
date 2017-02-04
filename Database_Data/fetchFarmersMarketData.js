@@ -6,8 +6,8 @@ var GeoJSON = require('mongoose-geojson-schema');
 var market = require('../server/model/farmModel');
 var async = require('async');
 
-var fetchAllData = function (zipCode,coordinates, radius, res, cb) {
-    rp.get(`http://search.ams.usda.gov/farmersmarkets/v1/data.svc/zipSearch?zip=${zipCode}`)
+var fetchAllData = function(zipCode, coordinates, radius, res, cb) {
+  rp.get(`http://search.ams.usda.gov/farmersmarkets/v1/data.svc/zipSearch?zip=${zipCode}`)
     .then((body) => {
       console.log('got the zips')
       JSON.parse(body).results.forEach((marketData, index) => {
@@ -18,7 +18,7 @@ var fetchAllData = function (zipCode,coordinates, radius, res, cb) {
             marketBody = JSON.parse(marketBody)
             var ID = id;
             var Address = marketBody['marketdetails']['Address'];
-            var Products =  marketBody['marketdetails']['Products'];
+            var Products = marketBody['marketdetails']['Products'].split('; ').join(',').split(',')
             var GoogleLink = marketBody['marketdetails']['GoogleLink'];
             var string = marketBody['marketdetails']['GoogleLink'];
             var start = string.indexOf("=");
@@ -54,12 +54,11 @@ var fetchAllData = function (zipCode,coordinates, radius, res, cb) {
               geometry: "2dsphere"
             });
           })
-          if(index === JSON.parse(body).results.length -1) {
-            cb(coordinates, radius, res);
-          }
+        if (index === JSON.parse(body).results.length - 1) {
+          setTimeout(cb, 1000, coordinates, radius, res);
+        }
       })
     })
 }
 
 module.exports = fetchAllData;
-

@@ -1,74 +1,117 @@
 <div>
-  <header class="map-header" layout="row" layout-align="none end">
-    <!-- Logo -->
-    <div class="logo logo-small">
-      City Sprouts
-    </div>
-    <!-- Header Search Bar -->
-    <div class="searchbar" flex>
-      <form ng-submit="submit()" layout="row" layout-align="end" flex>
-        <!-- Radius Input -->
-        <md-input-container flex="10">
-          <label>Radius (Miles)</label>
-          <md-icon class="material-icons md-48"> search </md-icon>
-          <input type="number" name="radius" min="1" max="20" ng-model="radius" />
-        </md-input-container>
-        <!-- Address Input -->
-        <md-input-container flex>
-          <!-- <label>Address</label> -->
-          <input id="searchTextField" type="text" ng-model="address">
-        </md-input-container>
-        <md-button type="submit" class="md-raised md-primary">Search</md-button>
-      </form>
-    </div>
-  </header>
+    <header class="map-header" layout="row" layout-align="none end">
+        <!-- Logo -->
+        <div class="logo logo-small">
+            City Sprouts
+        </div>
+        <!-- Header Search Bar -->
+        <div class="searchbar" flex>
+            <form ng-submit="submit()" layout="row" layout-align="end" flex>
+                <!-- Radius Input -->
+                <md-input-container flex="10">
+                    <label>Radius (Miles)</label>
+                    <md-icon class="material-icons md-48"> search </md-icon>
+                    <input type="number" name="radius" min="1" max="20" ng-model="radius" />
+                </md-input-container>
+                <!-- Address Input -->
+                <md-input-container flex>
+                    <!-- <label>Address</label> -->
+                    <input id="searchTextField" type="text" ng-model="address">
+                </md-input-container>
+                <md-button type="submit" class="md-raised md-primary">Search</md-button>
+            </form>
+        </div>
+    </header>
 </div>
 <div class="results-display" layout="row">
-  <!-- Product Filter Input -->
-  <section class="md-padding" flex="50" layout="column">
-    <md-input-container flex>
-      <label>Filter Farmers Markets by Products</label>
-      <input type="text" ng-model="prodFilter.Products">
-    </md-input-container>
-    <!-- Left-Panel Results Output -->
-    <md-content layout="row" flex layout-align="center" layout-fill>
-      <div ng-controller="AccordianCtrl" flex="100" class="content" ui-view>
-        <md-item ng-repeat="market in results" class="item" ng-class="{ 'selected-market': $index === selectedMarketIndex}">
-          <md-item-content class="market tile md-whiteframe-z1" ng-class="{ 'selected md-whiteframe-z2': $index === selectedMarketIndex}" layout="column">
-            <div layout="row" layout-fill class="folded">
-              <div class="md-tile-content" ng-click="selectMarketIndex($index)" layout="column" layout-align="center start">
-                <h3>{{ market.Name }}</h3>
-                <div ng-show="$index === selectedMarketIndex" ng-click = "stop($event)">
-                  <div class="check-element animate-show-hide" ng-model="checked">
-                    <span>{{market.Schedule}}</span>
-                    <br/>
-                    <span> {{market.Products}}</span>
-                    <br/>
-                    <span>{{ market.Address }}</span>
-                    <br/>
-                    <div>
-                      <md-input-container flex="100">
+    <!-- Product Filter Input -->
+    <section class="md-padding" flex="50" layout="column">
+        <md-input-container flex>
+            <label>Filter Farmers Markets by Products</label>
+            <input type="text" ng-model="search.Products">
+        </md-input-container>
+        <!-- Left-Panel Results Output -->
+
+        <md-content layout="row" flex layout-align="center" layout-fill>
+            <uib-accordion close-others="true" style="width: 100%;">
+                <div uib-accordion-group class="panel-default" heading="{{market.Name}}" ng-repeat="market in results |filter: search track by $index">
+                    <button type="button" class="btn btn-info" ng-click="show(market, $event)">Share</button>
+                    <div><label>Timing: </label> {{market.Schedule}}</div>
+                    <div><label>Products: </label>
+                        <md-chips readonly="true" ng-model="market.Products">
+                    </div>
+
+                    <div><label>Address: </label> {{ market.Address }}</div>
+                    <md-input-container flex="50">
                         <label>Enter a comment</label>
                         <input type="text" ng-model="user.name">
                         <md-button ng-submit="submitComment()" md-no-ink class="md-primary">Submit</md-button>
-                      </md-input-container>
+                    </md-input-container>
+                </div>
+            </uib-accordion>
+            <!--<div ng-controller="AccordianCtrl" flex="100" class="content" ui-view>
+                <md-item ng-repeat="market in results track by $index" class="item" ng-class="{ 'selected-market': $index === selectedMarketIndex}">
+                    <md-item-content class="market tile md-whiteframe-z1" ng-class="{ 'selected md-whiteframe-z2': $index === selectedMarketIndex}" layout="column">
+                        <div layout="row" layout-fill class="folded">
+                            <div class="md-tile-content" ng-click="selectMarketIndex($index)" layout="column" layout-align="center start">
+                                <h3>{{ market.Name }}</h3>
+                                <div ng-show="$index === selectedMarketIndex" ng-click="stop($event)">
+                                    <md-button ng-click="show(market, $event)" class="button-class|md-primary" md-ripple-size="auto" md-no-ink="true" aria-label="share"> Share </md-button>
+                                    <div class="check-element animate-show-hide" ng-model="checked">
+                                        <span>{{market.Schedule}}</span>
+                                        <br/>
+                                        <span> {{market.Products}}</span>
+                                        <br/>
+                                        <span>{{ market.Address }}</span>
+                                        <br/>
+                                        <div>
+                                            <md-input-container flex="100">
+                                                <label>Enter a comment</label>
+                                                <input type="text" ng-model="user.name">
+                                                <md-button ng-submit="submitComment()" md-no-ink class="md-primary">Submit</md-button>
+                                            </md-input-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+            <!--</md-item-content>
+            </md-item>
+</div>
+</md-content>-->
+    </section>
+    <!-- Google Maps -->
+    <div flex="50">
+        <div id="map">
+        </div>
+        Market info out of date? Let us know!
+        <md-button class="md-fab md-primary md-hue-2" md-direction="up">
+            <md-icon class="material-icons"> comment </md-icon>
+        </md-button>
+    </div>
+    <!-- <div id="map" flex="70"></div> -->
+</div>
+
+<script type="text/ng-template" id="pop.html">
+    <md-dialog>
+        <form ng-cloak>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Share</h2>
+
+                </div>
+            </md-toolbar>
+            <md-dialog-content>
+                <div class="md-dialog-content">
+                    <md-input-container ng-repeat="num in messageArr" class="md-block" flex-gt-sm="">
+                        <div id={{num.id}}>
+                            <label>Phone Number</label>
+                            <input md-maxlength="10" required="" name="phoneNum" ng-model="num.phoneNum"> </md-input-container>
                     </div>
                 </div>
-                </md-item-content>
-              </div>
-            </div>
-        </md-item>
-      </div>
-    </md-content>
-  </section>
-  <!-- Google Maps -->
-  <div flex="50">
-    <div id="map">
-    </div>
-    Market info out of date? Let us know!
-    <md-button class="md-fab md-primary md-hue-2" md-direction="up">
-      <md-icon class="material-icons"> comment </md-icon>
-    </md-button>
-  </div>
-  <!-- <div id="map" flex="70"></div> -->
-</div>
+            </md-dialog-content>
+        </form>
+        <md-button aria-label="Add More" ng-click="addMore($event)"> Add More </md-button>
+        <md-button aria-label="Send Message" ng-click="send($event)"> Send </md-button>
+    </md-dialog>
+</script>
