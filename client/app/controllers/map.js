@@ -150,8 +150,8 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
       templateUrl: 'pop.html',
       clickOutsideToClose: true,
       controller: function DialogController($scope, $mdDialog) {
-        var message = `Lets Meet Up! @ ${market.Name},
-on ${market.Address}.`
+        var message = `Whats up! Lets Meet Up! @ ${market.Name},
+        on ${market.Address}. Here is the google link for you ${market.GoogleLink}.`
         var counter = 0
         $scope.messageArr = [{
           id: counter,
