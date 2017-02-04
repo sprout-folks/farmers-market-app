@@ -1,42 +1,45 @@
-angular.module('farmer.map', ['farmer.services'])
+angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.bootstrap'])
 
-.controller('MapController', function ($scope, $location, Search, SampleData, GoogleMaps) {
+.controller('MapController', function($scope, $location, Search, SampleData, GoogleMaps, $mdDialog) {
   $scope.address = ''; // Scope variable to store user address input
   $scope.radius = 2; // Scope variable to store search radius input
 
   $scope.submit = () => { // Sends search request to server
     console.log("Submission sent!")
-    Search.search({ address: $scope.address, radius: $scope.radius})
-    .then((results) => {
-      $scope.results = results;
+    Search.search({
+        address: $scope.address,
+        radius: $scope.radius
+      })
+      .then((results) => {
+        $scope.results = results;
 
-      // Deletes markers currently on the map
-      GoogleMaps.Marker.deleteAll($scope.markers);
+        // Deletes markers currently on the map
+        GoogleMaps.Marker.deleteAll($scope.markers);
 
-      // Adds markers from new results
-      for(let i = 0; i < $scope.results.length; i++) {
-        GoogleMaps.Marker.create($scope.map, $scope.markers, infoWindow, $scope.results[i]);
-      }
+        // Adds markers from new results
+        for (let i = 0; i < $scope.results.length; i++) {
+          GoogleMaps.Marker.create($scope.map, $scope.markers, infoWindow, $scope.results[i]);
+        }
 
-      // Centers map view on new markers
-      GoogleMaps.autoCenter($scope.map, $scope.markers);
+        // Centers map view on new markers
+        GoogleMaps.autoCenter($scope.map, $scope.markers);
 
-      allProducts = getProdList($scope.results);
-      console.log(allProducts);
+        // allProducts = getProdList($scope.results);
+        console.log(allProducts);
 
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
   };
-  $scope.stop = function ($event) {
+  $scope.stop = function($event) {
     $event.stopPropagation();
   }
   $scope.selectedMarket = function(target) {
-    console.log(target);
-  }
-  // AccordianCtrl.fetch($scope.results)
-// Functionality for search results
+      console.log(target);
+    }
+    // AccordianCtrl.fetch($scope.results)
+    // Functionality for search results
 
   const sampleData = SampleData.data;
 
@@ -48,7 +51,7 @@ angular.module('farmer.map', ['farmer.services'])
   $scope.results = storedResults.length !== 0 ? storedResults : sampleData;
 
 
-// Functionality for Google Map
+  // Functionality for Google Map
 
   // Contains the configuration options used for creating a Google Map on page
   const mapOptions = {
@@ -74,19 +77,19 @@ angular.module('farmer.map', ['farmer.services'])
   $scope.markers = [];
 
   // Creates markers for sample data on initial page load (For Development Purposes)
-  for(let i = 0; i < $scope.results.length; i++) {
+  for (let i = 0; i < $scope.results.length; i++) {
     GoogleMaps.Marker.create($scope.map, $scope.markers, infoWindow, $scope.results[i]);
   }
 
-  if($scope.results.length !== 0) {
+  if ($scope.results.length !== 0) {
     GoogleMaps.autoCenter($scope.map, $scope.markers);
   }
 
 
-// Address Autocomplete Functionality
+  // Address Autocomplete Functionality
 
   // Sets geographic bounds for autocomplete address lookup
-  const defaultBounds = new google.maps.LatLngBounds( new google.maps.LatLng(-33.8902, 151.1759), new google.maps.LatLng(-33.8474, 151.2631));
+  const defaultBounds = new google.maps.LatLngBounds(new google.maps.LatLng(-33.8902, 151.1759), new google.maps.LatLng(-33.8474, 151.2631));
   // Finds element on page to associate autocomplete input funcationlity with
   const input = document.getElementById('searchTextField');
   // Autocomplete configuration options - see maps API docs for more info
@@ -97,24 +100,27 @@ angular.module('farmer.map', ['farmer.services'])
   $scope.autocomplete = new google.maps.places.Autocomplete(input, options);
 
 
-// Functionality for autocomplete filter functionailty
-// This code that utlizes this functionality is currently commented out on the map.html page
-// This is related to creating autocomplete feature to help users filter different types of
-// producs they are looking for
+  // Functionality for autocomplete filter functionailty
+  // This code that utlizes this functionality is currently commented out on the map.html page
+  // This is related to creating autocomplete feature to help users filter different types of
+  // producs they are looking for
 
   // This creates a chip object for a product type - See Angular Material Chip documentation - Refer to Custom Input example in Demo
   $scope.transformChip = (chip) => {
-    // If it is an object, it's already a known chip
-    if (angular.isObject(chip)) {
-      return chip;
-    }
+      // If it is an object, it's already a known chip
+      if (angular.isObject(chip)) {
+        return chip;
+      }
 
-    // Otherwise, create a new one
-    return { name: chip, type: 'new' }
-  }
-  // Stores an array of unique product categories
-  let allProducts = getProdList($scope.results);
-  // See Angular Material Chip documentation - Refer to Custom Input example in Demo for more info on the variables belwow
+      // Otherwise, create a new one
+      return {
+        name: chip,
+        type: 'new'
+      }
+    }
+    // Stores an array of unique product categories
+    // let allProducts = getProdList($scope.results);
+    // See Angular Material Chip documentation - Refer to Custom Input example in Demo for more info on the variables belwow
   $scope.selectedProducts = [];
 
   $scope.selectedItem = null;
@@ -127,21 +133,57 @@ angular.module('farmer.map', ['farmer.services'])
     return results;
   }
 
-   // Create filter function for a query string
-   let createFilterFor = (query) => {
-     let lowercaseQuery = angular.lowercase(query);
+  // Create filter function for a query string
+  let createFilterFor = (query) => {
+    let lowercaseQuery = angular.lowercase(query);
 
-     return function filterFn(product) {
-       return product._lowerproduct.indexOf(lowercaseQuery) === 0;
-     }
-   }
+    return function filterFn(product) {
+      return product._lowerproduct.indexOf(lowercaseQuery) === 0;
+    }
+  }
+
+  $scope.show = function(market, $event) {
+    $mdDialog.show({
+      targetEvent: $event,
+      scope: $scope,
+      preserveScope: true,
+      templateUrl: 'pop.html',
+      clickOutsideToClose: true,
+      controller: function DialogController($scope, $mdDialog) {
+        var message = `Lets Meet Up! @ ${market.Name},
+on ${market.Address}.`
+        var counter = 0
+        $scope.messageArr = [{
+          id: counter,
+          message,
+          phoneNum: ''
+        }];
+
+        $scope.addMore = function($event) {
+          counter++;
+          $scope.messageArr.push({
+            id: counter,
+            message,
+            phoneNum: ''
+          });
+          $event.preventDefault();
+        }
+
+        $scope.send = function() {
+          Search.sendMessage($scope.messageArr);
+          $mdDialog.hide();
+        }
+      }
+    })
+  }
 
   // Parses, checks and returns an array of unique product categories the results contain
   // The time complexity could be better on this function...
-  function getProdList (markets) {
+  function getProdList(markets) {
     let list = new Set();
 
     markets.forEach((market) => {
+      console.log(market.Products)
       let products = market.Products.split(/\s*;\s*/);
       for (let product of products) {
         list.add(product);
