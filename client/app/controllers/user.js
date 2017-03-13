@@ -14,7 +14,7 @@ angular.module('farmer.user', ['farmer.userServices'])
       // console.log('user.js UserAuth.login success?', success);
       if (success) {
         console.log('user.js UserAuth.login successful');
-        $location.path('/map');
+        $location.path('/');
         $scope.disabled = false;
         $scope.email = '';
         $scope.password = '';
@@ -42,7 +42,7 @@ angular.module('farmer.user', ['farmer.userServices'])
       // console.log('user.js UserAuth.signup success?', success);
       if (success) {
         console.log('user.js UserAuth.signup successful');
-        $location.path('/map');
+        $location.path('/');
         $scope.disabled = false;
         $scope.email = '';
         $scope.username = '';

@@ -32,7 +32,7 @@ angular.module('farmer.userServices', [])
     })
     .then(function(res) {
       var success = res.data.success;
-      user = res.data.user
+      user = res.data.user;
 
       console.log('$http.post success', success, res);
       console.log('$http.post success', res.data.success);
@@ -49,18 +49,24 @@ angular.module('farmer.userServices', [])
   var signup = function(credentials) {
     console.log('userServices.js signup()', credentials);
     var deferred = $q.defer();
+    const { email, username, password } = credentials;
     $http({
       method: 'POST',
       url: '/signup',
       data: {
-        email:    credentials.email,
-        username: credentials.username,
-        password: credentials.password
+        email,
+        username,
+        password
+
+
+        // email:    credentials.email,
+        // username: credentials.username,
+        // password: credentials.password
       }
     })
     .then(function(res) {
       var success = res.data.success;
-      user = res.data.user
+      user = res.data.user;
 
       // console.log('$http.post success', success, res);
       // console.log('$http.post success', res.data.success);
