@@ -40,10 +40,10 @@
                         <md-chips readonly="true" ng-model="market.Products">
                     </div>
                     <div><label>Address: </label> {{ market.Address }}</div>
-                    <md-input-container flex="50" ng-show="user" ng-controller="AccordianCtrl">
+                    <md-input-container flex="50" ng-show="user">
                         <label>Enter a comment</label>
                         <input type="text" ng-model="comment">
-                        <md-button ng-click="submitComment(market.ID)" md-no-ink class="md-primary">Submit</md-button>
+                        <md-button ng-click="submitComment(market.ID, $index)" md-no-ink class="md-primary">Submit</md-button>
                     </md-input-container>
                     <div style="margin-top: 1em;" ng-show="!user">
                       <div><label>Log in to leave a comment!</label></div>
@@ -62,7 +62,7 @@
                       <md-button ng-click="login(email, password)" md-no-ink class="md-primary">Login</md-button>
                       <label ng-show="error">{{ errorMessage }}<label>
                     </div>
-                    <div ng-controller="AccordianCtrl">
+                    <div >
                         <h2>Comments:</h2>
                         <!--<div ng-repeat="com in comments">
                             <div><label>Author:</label> {{ com.author }} </div>
