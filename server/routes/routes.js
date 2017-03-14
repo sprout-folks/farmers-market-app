@@ -5,7 +5,8 @@ var twilio = require('../controllers/twilioController');
 var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(app, passport) {
-  // this single, one-time admin setup should only be invoked once. As long as the database has 1 instance of the admin, this route should never ever be visited a second time.
+  // this single, one-time admin setup should only be invoked once. 
+  // As long as the database has 1 instance of the admin, this route should never ever be visited a second time.
   app.get('/setup', (req, res) => {
     adminController.setup(req, res);
   });
@@ -106,8 +107,8 @@ module.exports = function(app, passport) {
   });
 
   app.get('/api/isAuth', (req, res) => {
-    console.log('routes.js passport obj: ', passport);
-    console.log('routes.js passport.user obj: ', passport.user);
+    // console.log('routes.js passport obj: ', passport);
+    console.log('routes.js api/isAuth passport.user obj: ', passport.user);
     res.send(passport.user);
   });
 

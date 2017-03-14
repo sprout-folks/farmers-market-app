@@ -2,7 +2,7 @@ angular.module('farmer.user', ['farmer.userServices'])
 
 .controller('UserController', function($scope, $window, $location, UserAuth) {
   $scope.login = () => {
-    console.log('user.js userController', $scope.email, $scope.password);
+    // console.log('user.js userController', $scope.email, $scope.password);
     $scope.error    = false;
     $scope.disabled = true;
 
@@ -13,14 +13,14 @@ angular.module('farmer.user', ['farmer.userServices'])
     .then((success) => {
       // console.log('user.js UserAuth.login success?', success);
       if (success) {
-        console.log('user.js UserAuth.login successful');
-        $location.path('/map');
+        // console.log('user.js UserAuth.login successful');
+        $location.path('/');
         $scope.disabled = false;
         $scope.email = '';
         $scope.password = '';
       } else {
         // $location.path('/');
-        console.log('user.js UserAuth.login error');
+        // console.log('user.js UserAuth.login error');
         $scope.error = true;
         $scope.errorMessage = "Invalid username or password"
         $scope.disabled = false;
@@ -41,15 +41,15 @@ angular.module('farmer.user', ['farmer.userServices'])
     .then((success) => {
       // console.log('user.js UserAuth.signup success?', success);
       if (success) {
-        console.log('user.js UserAuth.signup successful');
-        $location.path('/map');
+        // console.log('user.js UserAuth.signup successful');
+        $location.path('/login');
         $scope.disabled = false;
         $scope.email = '';
         $scope.username = '';
         $scope.password = '';
       } else {
         // $location.path('/');
-        console.log('user.js UserAuth.signup error');
+        // console.log('user.js UserAuth.signup error');
         $scope.error = true;
         $scope.errorMessage = "Invalid username or password"
         $scope.disabled = false;
