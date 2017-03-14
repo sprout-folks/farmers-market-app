@@ -1,24 +1,27 @@
 // configure passport
-// require('./config/passport')(passport);
-
+var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
+var mongoose = require('mongoose');
 var User = require('../model/userModel');
 
 module.exports = function(passport) {
+
+  //== serialize and deserialize users ==//
   passport.serializeUser(function (user, done) {
+    // console.log('serializing User', user);
     console.log('serializing User');
     done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done) {
-    console.log('deserializing User');
     User.findById(id, function(err, user) {
-      console.log(user);
+      // console.log('deserializing User', user);
+      console.log('deserializing User');
       passport.user = user;
       done(err, user);
     });
   });
+  
 
 
   passport.use('local-signup', new LocalStrategy({
@@ -32,16 +35,20 @@ module.exports = function(passport) {
       User.findOne({ 'local.email': email })
       .catch(err => done(err))
       .then(user => {
-        if (user) {
+        if (user) {  // email already exists in db 
           return done(null, false, req.flash('signupMessage', 'That email is already registered.'));
+        
         } else {
+          // create a new instance of a User model 
           var newUser = new User();
 
           newUser.local.email = email;
+          newUser.local.username = req.body.username;
           newUser.local.password = newUser.generateHash(password);
 
           newUser.save()
           .then(newUser => {
+            newUser.token = newUser.generateJwt();
             return done(null, newUser);
           })
           .catch(err => done(err));
@@ -49,6 +56,7 @@ module.exports = function(passport) {
       });
     });
   }));
+
 
   passport.use('local-login', new LocalStrategy({
     usernameField: 'email',
@@ -60,16 +68,17 @@ module.exports = function(passport) {
     User.findOne({ 'local.email': email })
     .catch(err => done(err))
     .then(user => {
-      // console.log('user obj from db lookup: ', user);
       if (!user) {
         console.log('user not found');
         return done(null, false, req.flash('loginMessage', 'User not found.'));
       }
-      if (!user.validPassword(password)) {
+      if (!user.validPassword(password)) {  
         console.log('incorrect password');
         return done(null, false, req.flash('loginMessage', 'Incorrect password.'))
       }
-      console.log('passport.js user returned from local-login ', user);
+      user.token = user.generateJwt(); 
+      // console.log('\npassport.js user returned from local-login ', user);
+      console.log('\nTOKEN: ', user.token, '\n');
       return done(null, user);
     });
   }));
