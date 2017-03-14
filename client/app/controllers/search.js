@@ -4,6 +4,7 @@ angular.module('farmer.search', ['farmer.services'])
   $scope.address = '';
   $scope.radius = 2;
   $scope.submit = () => {
+    console.log( $scope.address, $scope.radius)
     Search.search({ address: $scope.address, radius: $scope.radius })
     .then((results) => {
       $location.path('/map');

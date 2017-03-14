@@ -17,7 +17,6 @@ var createComment = Q.nbind(Market.findOneAndUpdate, Market);
 var zipQuery = Q.nbind(zip.find, zip);
 module.exports = {
   allMarkets: function (req, res, next) {
-    console.log("allMarkets....")
     getAllFarms({})
       .then(function (farms) {
         res.json(farms)
@@ -28,7 +27,6 @@ module.exports = {
   },
 
   createComment: (req, res) => {
-    console.log("obj received: ", req.body)
     const comment = req.body.comment
     const author = req.body.author
     const id = req.body.id
@@ -45,7 +43,6 @@ module.exports = {
         {new: true}
       )
       .then((newComment) => {
-        console.log('line 48    ', newComment.Comments[newComment.Comments.length - 1]);
         res.send(newComment)
       })
       .catch(err => {
@@ -57,7 +54,6 @@ module.exports = {
   getLocationMarkets: (req, res, next) => {
     var address = util.replaceSpaceInAddress(req.query.address);
     var radius = util.convertMilesToKm(req.query.radius);
-    console.log('here is the radius', radius)
     rp.get(
       `https://maps.googleapis.com/maps/api/geocode/json?address=${address}`
     ).then((data) => {
@@ -68,7 +64,6 @@ module.exports = {
         }
       })
       var coordinates = JSON.parse(data).results[0].geometry.location;
-      console.log('successfully got geocode' + coordinates);
       zipQuery({
           Zip: userZip
         })
@@ -78,14 +73,11 @@ module.exports = {
                 Zip: userZip
               })
               .then(() => {
-                console.log('here in market controller')
                 fetcher(userZip, coordinates, radius, res, (coordinates, radius, res) => {
-                  console.log(coordinates)
                   marketLocation(coordinates, radius, res)
                 })
               })
           } else {
-            console.log(coordinates, radius)
             marketLocation(coordinates, radius, res)
           }
         })
@@ -93,8 +85,6 @@ module.exports = {
   },
 
   addMarket: (req, res, next) => {
-    console.log("req.body", req.body);
-    console.log("geo coords", req.body.geometry);
     Market.create({
         Address: req.body.market.Address,
         GoogleLink: req.body.market.Link,
@@ -105,7 +95,6 @@ module.exports = {
       },
       function (err, newMarket) {
         if (err) {
-          console.log("Error creating object!", err);
           res.send("error creating object!");
         } else {
           Market.collection.createIndex({
@@ -118,11 +107,8 @@ module.exports = {
   },
 
   fetchOne: (req, res) => {
-    console.log("above fetch");
-    console.log(req.body.marketId);
     queryById(req.body.marketId)
       .then((doc) => {
-        console.log("in fetch one", doc);
         res.send(doc);
       })
       .catch((err) => {
@@ -132,10 +118,6 @@ module.exports = {
   },
 
   updateOne: (req, res) => {
-    console.log("put request through to 'updateOne' func in market controller");
-    console.log("obj received: ", req.body.updatedObj.data);
-    console.log(req.body.updatedObj.data._id, "id");
-    console.log(typeof req.body.updatedObj.data.geometry.coordinates);
     findAndUpdate({
         _id: req.body.updatedObj.data._id
       }, {
@@ -154,7 +136,6 @@ module.exports = {
   },
 
   delete: (req, res) => {
-    console.log(req.body, "req.body!!")
     findAndRemove({
         _id: req.body.market.data._id
       },
@@ -167,7 +148,6 @@ module.exports = {
 function marketLocation(coordinates, radius, res) {
   var lng = Number(coordinates.lng);
   var lat = Number(coordinates.lat);
-  console.log("typeof lng,", typeof lng, typeof lat, lng)
   var marketsDetails;
   queryMarkets({
       geometry: {

@@ -34,8 +34,6 @@ module.exports = function(app, passport) {
   });
 
   app.put('/api/delete', (req,res)=>{
-    // console.log("in serverRoutes at delete");
-    console.log(req.body, "obj in routes");
     marketController.delete(req,res);
   });
 
@@ -44,7 +42,6 @@ module.exports = function(app, passport) {
   });
 
   app.post('/api/createComment', (req, res) => {
-    console.log('1) Hitting createComment route...   ', req.body)
     marketController.createComment(req, res)
   })
 
@@ -105,8 +102,6 @@ module.exports = function(app, passport) {
   });
 
   app.get('/api/isAuth', (req, res) => {
-    // console.log('routes.js passport obj: ', passport);
-    console.log('routes.js api/isAuth passport.user obj: ', passport.user);
     res.send(passport.user);
   });
 

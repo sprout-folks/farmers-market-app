@@ -67,9 +67,6 @@ angular.module('farmer.userServices', [])
     .then(function(res) {
       var success = res.data.success;
       user = res.data.user;
-
-      console.log('$http.post success', success, res);
-      console.log('$http.post success', res.data.success);
       deferred.resolve(user);
     })
     .catch(err => {

@@ -200,7 +200,6 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
 $scope.comment = ''
 $scope.author = $rootScope.user
 $scope.submitComment = function (id, $index, comment ) {
-  console.log(comment)
       const newComment = {
         id,
         author: $scope.author,
