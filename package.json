@@ -4,7 +4,7 @@
   "description": "tells you where the closest farmers markets are in your area",
   "main": "server/server.js",
   "scripts": {
-    "start": "nodemon --ignore node_modules server/server.js",
+    "start": "node server/server.js",
     "test": "npm run webdriver & protractor test/e2e/conf.js",
     "webdriver": "webdriver-manager start & wait"
   },
@@ -27,7 +27,6 @@
     "jasmine-spec-reporter": "^3.2.0",
     "lodash": "^4.17.4",
     "mocha": "^3.2.0",
-    "morgan": "^1.7.0",
     "node-dir": "^0.1.16",
     "nodemon": "^1.11.0"
   },
@@ -45,6 +44,7 @@
     "jwt-simple": "^0.5.1",
     "mongoose": "^4.7.8",
     "mongoose-geojson-schema": "^2.1.2",
+    "morgan": "^1.7.0",
     "node-cron": "^1.1.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
