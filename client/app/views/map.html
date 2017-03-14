@@ -1,10 +1,10 @@
 <div>
   <header class="map-header" layout="row" layout-align="none end">
     <!-- Logo -->
-    <a href="/">
-      <div class="logo logo-small">
-        City Sprouts
-      </div>
+     <a href="/">
+    <div class="logo logo-small">
+      City Sprouts
+    </div>
     </a>
     <!-- Header Search Bar -->
     <div class="searchbar" flex>
@@ -42,53 +42,53 @@
             <md-chips readonly="true" ng-model="market.Products">
           </div>
           <div><label>Address: </label> {{ market.Address }}</div>
-          <md-input-container flex="50" ng-show="user" ng-controller="AccordianCtrl">
+          <md-input-container flex="50" ng-show="user">
             <label>Enter a comment</label>
             <input type="text" ng-model="comment">
-            <md-button ng-click="submitComment(market.ID)" md-no-ink class="md-primary">Submit</md-button>
           </md-input-container>
+          <md-button ng-click="submitComment(market.ID, $index, comment)" md-no-ink class="md-primary">Submit</md-button>
           <div style="margin-top: 1em;" ng-show="!user">
             <div><label>Log in to leave a comment!</label></div>
-            <md-input-container flex="50" >
+            <md-input-container flex="50">
               <span>
-                <label>Email</label>
-                <input type="text" ng-model="email">
-              </span>
+<label>Email</label>
+<input type="text" ng-model="email">
+</span>
             </md-input-container>
             <md-input-container flex="50">
               <span>
-                <label>Password</label>
-                <input type="password" ng-model="password">
-              </span>
+<label>Password</label>
+<input type="password" ng-model="password">
+</span>
             </md-input-container>
             <md-button ng-click="login(email, password)" md-no-ink class="md-primary">Login</md-button>
             <label ng-show="error">{{ errorMessage }}<label>
-          </div>
-          <div ng-controller="AccordianCtrl">
-            <h2>Comments:</h2>
-            <!--<div ng-repeat="com in comments">
-                <div><label>Author:</label> {{ com.author }} </div>
-                <div><label>Comment:</label> {{ com.comment }} </div>
-            </div>-->
-            <div ng-repeat="comment in market.Comments">
-              <div><label>Author:</label> {{ comment.author }} </div>
-              <div><label>Comment:</label> {{ comment.comment }} </div>
-            </div>
-          </div>
+</div>
+<div ng-controller="AccordianCtrl">
+<h2>Comments:</h2>
+<!--<div ng-repeat="com in comments">
+<div><label>Author:</label> {{ com.author }} </div>
+          <div><label>Comment:</label> {{ com.comment }} </div>
+        </div>-->
+        <div ng-repeat="comment in market.Comments">
+          <div><label>Author:</label> {{ comment.author }} </div>
+          <div><label>Comment:</label> {{ comment.comment }} </div>
         </div>
-      </uib-accordion>
-    </md-content>
-  </section>
-  <!-- Google Maps -->
-  <div flex="85">
-      <div id="map" />
-      <!--</div>
-      Market info out of date? Let us know!
-      <md-button class="md-fab md-primary md-hue-2" md-direction="up">
-          <md-icon class="material-icons"> comment </md-icon>
-      </md-button>-->
+</div>
+</div>
+</uib-accordion>
+</md-content>
+</section>
+<!-- Google Maps -->
+<div flex="50">
+  <div id="map">
   </div>
-  <!-- <div id="map" flex="70"></div> -->
+  <!--Market info out of date? Let us know!
+<md-button class="md-fab md-primary md-hue-2" md-direction="up">
+<md-icon class="material-icons"> comment </md-icon>
+</md-button>-->
+</div>
+<!-- <div id="map" flex="70"></div> -->
 </div>
 <script type="text/ng-template" id="pop.html">
   <md-dialog>

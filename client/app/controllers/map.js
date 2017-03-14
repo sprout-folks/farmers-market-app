@@ -5,12 +5,12 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
   $scope.radius = 2; // Scope variable to store search radius input
 
   $scope.submit = () => { // Sends search request to server
-    console.log("Submission sent!")
     Search.search({
         address: $scope.address,
         radius: $scope.radius
       })
       .then((results) => {
+        results.Products = Array.from( new Set (results.Products))
         $scope.results = results;
 
         // Deletes markers currently on the map
@@ -36,7 +36,6 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
     $event.stopPropagation();
   }
   $scope.selectedMarket = function(target) {
-      console.log(target);
     }
     // AccordianCtrl.fetch($scope.results)
     // Functionality for search results
@@ -45,7 +44,6 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
 
   let storedResults = Search.retrieveResults(); // Pulls any stored results in Search factory
 
-  console.log(storedResults);
 
   // Stores markets that return from the search requests on search.html or map.html pages
   $scope.results = storedResults.length !== 0 ? storedResults : sampleData;
@@ -95,6 +93,7 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
   // Autocomplete configuration options - see maps API docs for more info
   const options = {
     bounds: defaultBounds,
+    componentRestrictions: {country: "US"}
   };
   // Creates new autocomplete input object
   $scope.autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -150,8 +149,8 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
       templateUrl: 'pop.html',
       clickOutsideToClose: true,
       controller: function DialogController($scope, $mdDialog) {
-        var message = `Lets Meet Up! @ ${market.Name},
-on ${market.Address}.`
+        var message = `Whats up! Lets Meet Up! @ ${market.Name},
+        on ${market.Address}. Here is the google link for you ${market.GoogleLink}.`
         var counter = 0
         $scope.messageArr = [{
           id: counter,
@@ -179,32 +178,13 @@ on ${market.Address}.`
 
   // Parses, checks and returns an array of unique product categories the results contain
   // The time complexity could be better on this function...
-  function getProdList(markets) {
-    let list = new Set();
-
-    markets.forEach((market) => {
-      console.log(market.Products)
-      let products = market.Products.split(/\s*;\s*/);
-      for (let product of products) {
-        list.add(product);
-      }
-    });
-
-    return [...list].map((product) => {
-      let obj = {};
-      obj.product = product;
-      obj._lowerproduct = product.toLowerCase();
-      return obj;
-    });
-  };
+  
 
   $scope.login = (email, password) => {
-    console.log('maps.js login()', email, password);
     $scope.error = false;
 
     UserAuth.login({email: email, password: password})
     .then(success => {
-      console.log(success);
       if (success) {
         $rootScope.user = success;
       } else {
@@ -213,8 +193,25 @@ on ${market.Address}.`
       }
     })
     .catch();
+
+    
   };
+  
+$scope.comment = ''
+$scope.author = $rootScope.user
+$scope.submitComment = function (id, $index, comment ) {
+      const newComment = {
+        id,
+        author: $scope.author,
+        comment: comment
+      }
+      $scope.results[$index].Comments.push(newComment)
+      Search.sendNewComment(newComment)
+        .then(data => {
+          arr = data.Comment
+          // console.log('line 30:  ', $scope.comments);
 
-
-
+        })
+        .catch(err => console.error(err))
+    }
 });

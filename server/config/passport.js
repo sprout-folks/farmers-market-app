@@ -64,7 +64,6 @@ module.exports = function(passport) {
     passReqToCallback: true
   },
   function(req, email, password, done) {
-    console.log('passport.js local-login');
     User.findOne({ 'local.email': email })
     .catch(err => done(err))
     .then(user => {

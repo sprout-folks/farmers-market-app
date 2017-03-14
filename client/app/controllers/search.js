@@ -4,7 +4,7 @@ angular.module('farmer.search', ['farmer.services'])
   $scope.address = '';
   $scope.radius = 2;
   $scope.submit = () => {
-    console.log("Submission sent!")
+    console.log( $scope.address, $scope.radius)
     Search.search({ address: $scope.address, radius: $scope.radius })
     .then((results) => {
       $location.path('/map');
@@ -17,6 +17,7 @@ angular.module('farmer.search', ['farmer.services'])
   const input = document.getElementById('searchTextField');
   const options = {
     bounds: defaultBounds,
+    componentRestrictions: {country: "US"}
   };
 
   $scope.autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -34,7 +35,6 @@ angular.module('farmer.search', ['farmer.services'])
     $location.path('/profile');
   }
   $scope.logout = () => {
-    console.log('user.js LOGGING OUT');
     UserAuth.signout();
     $rootScope.user = undefined;
   }
