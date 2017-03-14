@@ -37,7 +37,7 @@ var dbRefresh = function() {
               })
             }
 
-            if (Products !== market.Products) {
+            if (Products !== market.Products.join('; ')) {
               markets.update({ "_id": market._id }, { $set: { "Products": Products } }, (err, mark) => {
                 if (err) {
                   console.log(err);
