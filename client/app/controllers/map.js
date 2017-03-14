@@ -10,6 +10,7 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
         radius: $scope.radius
       })
       .then((results) => {
+        results.Products = Array.from( new Set (results.Products))
         $scope.results = results;
 
         // Deletes markers currently on the map
@@ -92,6 +93,7 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
   // Autocomplete configuration options - see maps API docs for more info
   const options = {
     bounds: defaultBounds,
+    componentRestrictions: {country: "US"}
   };
   // Creates new autocomplete input object
   $scope.autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -176,23 +178,7 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
 
   // Parses, checks and returns an array of unique product categories the results contain
   // The time complexity could be better on this function...
-  function getProdList(markets) {
-    let list = new Set();
-
-    markets.forEach((market) => {
-      let products = market.Products.split(/\s*;\s*/);
-      for (let product of products) {
-        list.add(product);
-      }
-    });
-
-    return [...list].map((product) => {
-      let obj = {};
-      obj.product = product;
-      obj._lowerproduct = product.toLowerCase();
-      return obj;
-    });
-  };
+  
 
   $scope.login = (email, password) => {
     $scope.error = false;
@@ -212,21 +198,21 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
   };
   
 $scope.comment = ''
-$scope.author = 'Peter'
-$scope.submitComment = function (id, $index) {
+$scope.author = $rootScope.user
+$scope.submitComment = function (id, $index, comment ) {
+  console.log(comment)
       const newComment = {
         id,
         author: $scope.author,
-        comment: $scope.comment
+        comment: comment
       }
       $scope.results[$index].Comments.push(newComment)
-      // Search.sendNewComment(newComment)
-      //   .then(data => {
-      //     arr = data.Comment
-      //     // console.log('line 30:  ', $scope.comments);
+      Search.sendNewComment(newComment)
+        .then(data => {
+          arr = data.Comment
+          // console.log('line 30:  ', $scope.comments);
 
-      //   })
-      //   .catch(err => console.error(err))
+        })
+        .catch(err => console.error(err))
     }
-
 });
