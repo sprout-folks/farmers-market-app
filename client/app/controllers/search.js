@@ -16,6 +16,7 @@ angular.module('farmer.search', ['farmer.services'])
   const input = document.getElementById('searchTextField');
   const options = {
     bounds: defaultBounds,
+    componentRestrictions: {country: "US"}
   };
 
   $scope.autocomplete = new google.maps.places.Autocomplete(input, options);
