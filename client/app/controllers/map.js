@@ -213,8 +213,27 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
       }
     })
     .catch();
+
+    
   };
+  
+$scope.comment = ''
+$scope.author = 'Peter'
+$scope.submitComment = function (id, $index) {
+  console.log($scope.comment)
+      const newComment = {
+        id,
+        author: $scope.author,
+        comment: $scope.comment
+      }
+      $scope.results[$index].Comments.push(newComment)
+      // Search.sendNewComment(newComment)
+      //   .then(data => {
+      //     arr = data.Comment
+      //     // console.log('line 30:  ', $scope.comments);
 
-
+      //   })
+      //   .catch(err => console.error(err))
+    }
 
 });

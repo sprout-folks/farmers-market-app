@@ -18,7 +18,7 @@ var fetchAllData = function(zipCode, coordinates, radius, res, cb) {
             marketBody = JSON.parse(marketBody)
             var ID = id;
             var Address = marketBody['marketdetails']['Address'];
-            var Products = marketBody['marketdetails']['Products'].split('; ').join(',').split(',')
+            var Products = marketBody['marketdetails']['Products'].split('; ')
             var GoogleLink = marketBody['marketdetails']['GoogleLink'];
             var string = marketBody['marketdetails']['GoogleLink'];
             var start = string.indexOf("=");
