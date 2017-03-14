@@ -30,10 +30,8 @@
 
       $scope.submitUpdate = function(){
         httpAdminFactory.update($scope.singleObj)
-          .then((resp)=>{console.log(resp);
-            console.log($scope.successView);
+          .then((resp)=>{
             $scope.successView= true;
-            console.log($scope.successView)
           });
 
       };
@@ -41,7 +39,6 @@
       $scope.addMarket = function(){
         httpAdminFactory.addMarket($scope.addObject)
           .then((resp)=>{
-            console.log("returned obj!", resp);
             $scope.successView = true;
             $scope.addView=false;
           });
@@ -49,12 +46,9 @@
       };
 
       $scope.deleteMarket = function(){
-        console.log("inside delete market!!", $scope.singleObj)
         httpAdminFactory.deleteMarket($scope.singleObj)
-          .then((resp)=>{console.log(resp);
-            console.log($scope.successView);
+          .then((resp)=>{
             $scope.successView= true;
-            console.log($scope.successView);
             $scope.addView = false;
           });
       };
@@ -62,13 +56,9 @@
       $scope.retrieveMarket = function(){
 
         if($scope.marketID){
-          console.log('marketId in scope: ', $scope.marketID);
-         
           httpAdminFactory.getOne($scope.marketID)
             .then((obj)=> { 
-              console.log("http request returned an obj");
               if(obj.data === "not found"){
-                console.log("farm not found!")
                 $scope.alertView = true;
               }else{
                 $scope.alertView = false;

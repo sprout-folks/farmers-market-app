@@ -4,7 +4,6 @@ angular.module('farmer.search', ['farmer.services'])
   $scope.address = '';
   $scope.radius = 2;
   $scope.submit = () => {
-    console.log("Submission sent!")
     Search.search({ address: $scope.address, radius: $scope.radius })
     .then((results) => {
       $location.path('/map');
@@ -34,7 +33,6 @@ angular.module('farmer.search', ['farmer.services'])
     $location.path('/profile');
   }
   $scope.logout = () => {
-    console.log('user.js LOGGING OUT');
     UserAuth.signout();
     $rootScope.user = undefined;
   }

@@ -9,7 +9,6 @@ var async = require('async');
 var fetchAllData = function(zipCode, coordinates, radius, res, cb) {
   rp.get(`http://search.ams.usda.gov/farmersmarkets/v1/data.svc/zipSearch?zip=${zipCode}`)
     .then((body) => {
-      console.log('got the zips')
       JSON.parse(body).results.forEach((marketData, index) => {
         var id = marketData.id
         rp.get(`http://search.ams.usda.gov/farmersmarkets/v1/data.svc/mktDetail?id=${id}`)

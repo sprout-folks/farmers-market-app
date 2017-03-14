@@ -5,7 +5,6 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
   $scope.radius = 2; // Scope variable to store search radius input
 
   $scope.submit = () => { // Sends search request to server
-    console.log("Submission sent!")
     Search.search({
         address: $scope.address,
         radius: $scope.radius
@@ -36,7 +35,6 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
     $event.stopPropagation();
   }
   $scope.selectedMarket = function(target) {
-      console.log(target);
     }
     // AccordianCtrl.fetch($scope.results)
     // Functionality for search results
@@ -45,7 +43,6 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
 
   let storedResults = Search.retrieveResults(); // Pulls any stored results in Search factory
 
-  console.log(storedResults);
 
   // Stores markets that return from the search requests on search.html or map.html pages
   $scope.results = storedResults.length !== 0 ? storedResults : sampleData;
@@ -183,7 +180,6 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
     let list = new Set();
 
     markets.forEach((market) => {
-      console.log(market.Products)
       let products = market.Products.split(/\s*;\s*/);
       for (let product of products) {
         list.add(product);
@@ -199,12 +195,10 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
   };
 
   $scope.login = (email, password) => {
-    console.log('maps.js login()', email, password);
     $scope.error = false;
 
     UserAuth.login({email: email, password: password})
     .then(success => {
-      console.log(success);
       if (success) {
         $rootScope.user = success;
       } else {
@@ -220,7 +214,6 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
 $scope.comment = ''
 $scope.author = 'Peter'
 $scope.submitComment = function (id, $index) {
-  console.log($scope.comment)
       const newComment = {
         id,
         author: $scope.author,

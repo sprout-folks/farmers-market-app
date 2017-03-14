@@ -17,7 +17,6 @@ angular.module('farmer.services', [])
         }
       })
       .then(function(response) {
-        console.log('response data', response);
         // Saves results to interal variable
         searchResults = response.data;
         return response.data;
@@ -31,7 +30,6 @@ angular.module('farmer.services', [])
       data: newCommentObject
     })
       .then(response => {
-        console.log(response)
         return response.data
       })
       .catch(err => console.error('sendNewComment failed!  ', err))
@@ -66,7 +64,6 @@ angular.module('farmer.services', [])
         }
       })
       .then(function() {
-        console.log('successful post to server');
       })
       .catch(function(err) {
         console.error(err);
@@ -176,7 +173,6 @@ angular.module('farmer.services', [])
   const autoCenter = (map, storage) => {
     let bounds = new google.maps.LatLngBounds();
     for (let i = 0; i < storage.length; i++) {
-      console.log(storage[i].getPosition().lng())
       bounds.extend(storage[i].position);
     }
     map.fitBounds(bounds);

@@ -10,7 +10,6 @@ module.exports = {
     queryMarkets(coordinates)
     .then((markets) => {
       marketsDetails = markets;
-      console.log('successful query to mongoDB for markets', marketsDetails);
     })
     .catch((err) => {
       console.error(err);
