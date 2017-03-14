@@ -8,14 +8,15 @@ module.exports = function(passport) {
 
   //== serialize and deserialize users ==//
   passport.serializeUser(function (user, done) {
+    // console.log('serializing User', user);
     console.log('serializing User');
     done(null, user.id);
   });
 
   passport.deserializeUser(function(id, done) {
-    console.log('deserializing User');
     User.findById(id, function(err, user) {
-      // console.log(user);
+      // console.log('deserializing User', user);
+      console.log('deserializing User');
       passport.user = user;
       done(err, user);
     });
@@ -42,7 +43,7 @@ module.exports = function(passport) {
           var newUser = new User();
 
           newUser.local.email = email;
-          newUser.local.username = username;
+          newUser.local.username = req.body.username;
           newUser.local.password = newUser.generateHash(password);
 
           newUser.save()
@@ -75,8 +76,9 @@ module.exports = function(passport) {
         console.log('incorrect password');
         return done(null, false, req.flash('loginMessage', 'Incorrect password.'))
       }
-      console.log('passport.js user returned from local-login ', user);
       user.token = user.generateJwt(); 
+      // console.log('\npassport.js user returned from local-login ', user);
+      console.log('\nTOKEN: ', user.token, '\n');
       return done(null, user);
     });
   }));

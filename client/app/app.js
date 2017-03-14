@@ -24,8 +24,8 @@ angular.module('farmer', [
       templateUrl: 'app/views/adminLogin.html',
       controller: 'LoginController',
     })
-     /*********************************************/
-    /** new routes with addition of passportjs  **/
+     /**********************************************/
+    /**  new routes with addition of passportjs  **/
     .when('/login', {
       templateUrl: 'app/views/userLogin.html',
       controller: 'UserController',
@@ -51,32 +51,35 @@ angular.module('farmer', [
     // an $httpProvider interceptor is added to all request calls so that all outgoing $http requests have the token attached
     // $httpProvider.interceptors.push('AttachTokens');
 })
-.factory('AttachTokens', function($window) {
-  var attach = {
-    request: function(object) {
-      var jwt = $window.localStorage.getItem('token');
-      if(jwt) {
-        object.headers['x-access-token'] = jwt;
-      }
-      object.headers['Allow-Control-Allow-Origin'] = '*';
-      return object;
-    }
-  };
-  return attach;
-})
-.run(function($rootScope, $location, UserAuth) {
+// .factory('AttachTokens', function($window) {
+//   console.log('app.js attaching tokens')
+//   var attach = {
+//     request: function(object) {
+//       var jwt = $window.localStorage.getItem('token');
+//       if(jwt) {
+//         console.log('existing token!');
+//         object.headers['x-access-token'] = jwt;
+//       }
+//       object.headers['Allow-Control-Allow-Origin'] = '*';
+//       return object;
+//     }
+//   };
+//   return attach;
+// })
+.run(function($rootScope, $location, $window, UserAuth) {
   // listen for when user wants to make a route change
   // make sure to send the token to the server with the route change request
   // redirect to admin login for the route(s) that require an 'authenticate'
   $rootScope.$on('$routeChangeStart', function(evt, next, current) {
-    console.log('route change triggered');
+    // console.log('route change triggered');
     UserAuth.isAuth().then(authorized => {
-      console.log('front-end auth', authorized);
+      // console.log('front-end auth', authorized);
       if (next.$$route && next.$$route.authenticate && !authorized.data) {
         $location.path('/login');
       } else {
-        $rootScope.user = authorized.data;
-        console.log('rootScope user: ', $rootScope.user);
+        const { local } = authorized.data
+        $rootScope.user = ( local && local.username) ? local.username : null;
+        // console.log('rootScope user: ', $rootScope.user);
       }
     })
   });

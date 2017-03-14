@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var jwt = require('jsonwebtoken');
 
+mongoose.Promise = require('bluebird');
 var keys = require('../../API_KEYS.js');
 const SALT = 5;
 
