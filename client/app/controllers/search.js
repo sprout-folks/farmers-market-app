@@ -35,8 +35,10 @@ angular.module('farmer.search', ['farmer.services'])
     $location.path('/profile');
   }
   $scope.logout = () => {
-    UserAuth.signout();
-    $rootScope.user = undefined;
+    setTimeout(() => {
+      UserAuth.signout();
+      $rootScope.user = null;
+    }, 500);
   }
 
 });
