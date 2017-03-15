@@ -1,31 +1,29 @@
-<div>
-  <header class="map-header" layout="row" layout-align="none end">
-    <!-- Logo -->
-     <a href="/">
-    <div class="logo logo-small">
-      City Sprouts
-    </div>
-    </a>
-    <!-- Header Search Bar -->
-    <div class="searchbar" flex>
-      <form ng-submit="submit()" layout="row" layout-align="end" flex>
-        <!-- Radius Input -->
-        <md-input-container flex="10">
-          <label>Radius (Miles)</label>
-          <md-icon class="material-icons md-48"> search </md-icon>
-          <input type="number" name="radius" min="1" max="20" ng-model="radius" />
-        </md-input-container>
-        <!-- Address Input -->
-        <md-input-container flex>
-          <!-- <label>Address</label> -->
-          <input id="searchTextField" type="text" ng-model="address">
-        </md-input-container>
-        <md-button type="submit" class="md-raised md-primary">Search</md-button>
-      </form>
-    </div>
-  </header>
-  <!-- Left-Panel Results Output -->
-</div>
+<header class="map-header" layout="row" layout-align="none end">
+  <!-- Logo -->
+    <a href="/">
+  <div class="logo logo-small">
+    City Sprouts
+  </div>
+  </a>
+  <!-- Header Search Bar -->
+  <div class="searchbar" flex>
+    <form ng-submit="submit()" layout="row" layout-align="end" flex>
+      <!-- Radius Input -->
+      <md-input-container flex="10">
+        <label>Radius (Miles)</label>
+        <md-icon class="material-icons md-48"> search </md-icon>
+        <input type="number" name="radius" min="1" max="20" ng-model="radius" />
+      </md-input-container>
+      <!-- Address Input -->
+      <md-input-container flex>
+        <!-- <label>Address</label> -->
+        <input id="searchTextField" type="text" ng-model="address">
+      </md-input-container>
+      <md-button type="submit" class="md-raised md-primary">Search</md-button>
+    </form>
+  </div>
+</header>
+<!-- Left-Panel Results Output -->
 <div class="results-display" layout="row">
   <!-- Product Filter Input -->
   <section class="md-padding" flex="50" layout="column">
@@ -42,11 +40,13 @@
             <md-chips readonly="true" ng-model="market.Products">
           </div>
           <div><label>Address: </label> {{ market.Address }}</div>
+          
           <md-input-container flex="50" ng-show="user">
             <label>Enter a comment</label>
             <input type="text" ng-model="comment">
           </md-input-container>
-          <md-button ng-click="submitComment(market.ID, $index, comment)" md-no-ink class="md-primary">Submit</md-button>
+          
+          <md-button ng-click="submitComment(market.ID, $index, comment); comment = '' " md-no-ink class="md-primary">Submit</md-button>
           <div style="margin-top: 1em;" ng-show="!user">
             <div><label>Log in to leave a comment!</label></div>
             <md-input-container flex="50">
@@ -64,6 +64,7 @@
             <md-button ng-click="login(email, password)" md-no-ink class="md-primary">Login</md-button>
             <label ng-show="error">{{ errorMessage }}<label>
           </div>
+          
           <div ng-controller="AccordianCtrl">
             <h2>Comments:</h2>
             <!--<div ng-repeat="com in comments">
@@ -75,6 +76,7 @@
               <div><label>Comment:</label> {{ comment.comment }} </div>
             </div>
           </div>
+          
         </div>
       </uib-accordion>
     </md-content>

@@ -197,21 +197,20 @@ angular.module('farmer.map', ['farmer.services', 'ngAnimate', 'ngSanitize', 'ui.
     
   };
   
-$scope.comment = ''
-$scope.author = $rootScope.user
-$scope.submitComment = function (id, $index, comment ) {
-      const newComment = {
-        id,
-        author: $scope.author,
-        comment: comment
-      }
-      $scope.results[$index].Comments.push(newComment)
-      Search.sendNewComment(newComment)
-        .then(data => {
-          arr = data.Comment
-          // console.log('line 30:  ', $scope.comments);
-
-        })
-        .catch(err => console.error(err))
+  $scope.comment = ''
+  $scope.author = $rootScope.user
+  $scope.submitComment = function (id, $index, comment ) {
+    const newComment = {
+      id,
+      author: $scope.author,
+      comment: comment
+    }
+    $scope.results[$index].Comments.push(newComment)
+    Search.sendNewComment(newComment)
+      .then(data => {
+        arr = data.Comment
+        // console.log('line 30:  ', $scope.comments);
+      })
+      .catch(err => console.error(err))
     }
 });

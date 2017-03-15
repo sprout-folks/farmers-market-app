@@ -15,15 +15,7 @@ angular.module('farmer', [
       templateUrl: 'app/views/map.html',
       controller: 'MapController',
     })
-    .when('/adminUpdate', {
-      templateUrl: 'app/views/adminSubmit.html',
-      controller: 'AdminController',
-      authenticate: true
-    })
-    .when('/adminLogin', {
-      templateUrl: 'app/views/adminLogin.html',
-      controller: 'LoginController',
-    })
+
      /**********************************************/
     /**  new routes with addition of passportjs  **/
     .when('/login', {
@@ -78,7 +70,18 @@ angular.module('farmer', [
         $location.path('/login');
       } else {
         const { local } = authorized.data
-        $rootScope.user = ( local && local.username) ? local.username : null;
+        // console.log('user obj? ', local);
+        if (local && local.username) {
+          // console.log('add stuff to $rootScope');
+          $rootScope.user = local.username;
+          $rootScope.email = local.email;
+          $rootScope.username = local.username;
+        } else {
+          // console.log('add null to $rootScope');
+          $rootScope.user = null;
+          $rootScope.email = null;
+          $rootScope.username = null;
+        }
         // console.log('rootScope user: ', $rootScope.user);
       }
     })
